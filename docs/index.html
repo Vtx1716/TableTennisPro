@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Table Tennis Pro</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>🏓 Table Tennis Pro</h1>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="players">Players</button>
+            <button class="tab-btn" data-tab="score">Score Tracker</button>
+            <button class="tab-btn" data-tab="tournaments">Tournaments</button>
+            <button class="tab-btn" data-tab="stats">Statistics</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <main class="tab-content">
+            <!-- Players Tab -->
+            <div id="players-tab" class="tab-pane active">
+                <div class="section-header">
+                    <h2>Player Management</h2>
+                    <button class="btn btn-primary" id="add-player-btn">+ Add Player</button>
+                </div>
+                <div id="players-list" class="players-grid"></div>
+            </div>
+
+            <!-- Score Tracker Tab -->
+            <div id="score-tab" class="tab-pane">
+                <div class="section-header">
+                    <h2>Score Tracker</h2>
+                </div>
+                <div id="match-setup" class="match-setup">
+                    <div class="form-group">
+                        <label>Player 1</label>
+                        <select id="player1-select" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Player 2</label>
+                        <select id="player2-select" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Match Format</label>
+                        <select id="match-format" class="form-control">
+                            <option value="3">Best of 3</option>
+                            <option value="5" selected>Best of 5</option>
+                            <option value="7">Best of 7</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-success btn-large" id="start-match-btn">Start Match</button>
+                </div>
+
+                <div id="score-tracker" class="score-tracker hidden">
+                    <div class="score-display">
+                        <div class="player-panel player1-panel">
+                            <h3 id="p1-name">Player 1</h3>
+                            <div class="score" id="p1-score">0</div>
+                            <div class="controls">
+                                <button class="btn btn-control" id="p1-minus">-1</button>
+                                <button class="btn btn-control btn-plus" id="p1-plus">+1</button>
+                            </div>
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="player-panel player2-panel">
+                            <h3 id="p2-name">Player 2</h3>
+                            <div class="score" id="p2-score">0</div>
+                            <div class="controls">
+                                <button class="btn btn-control" id="p2-minus">-1</button>
+                                <button class="btn btn-control btn-plus" id="p2-plus">+1</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="match-info">
+                        <p>Best of <span id="match-best-of">5</span></p>
+                        <p>First to <span id="match-first-to">3</span> games wins</p>
+                    </div>
+                    <div class="match-actions">
+                        <button class="btn btn-secondary" id="cancel-match-btn">Cancel Match</button>
+                        <button class="btn btn-success" id="finish-match-btn">Finish Match</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tournaments Tab -->
+            <div id="tournaments-tab" class="tab-pane">
+                <div class="section-header">
+                    <h2>Tournaments</h2>
+                    <button class="btn btn-primary" id="create-tournament-btn">+ Create Tournament</button>
+                </div>
+                <div id="tournaments-list" class="tournaments-list"></div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div id="stats-tab" class="tab-pane">
+                <div class="section-header">
+                    <h2>Player Statistics</h2>
+                </div>
+                <div id="stats-table-container" class="stats-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Tournament Detail View -->
+    <div id="tournament-detail-view" class="tournament-detail-view hidden">
+        <div class="view-header">
+            <button class="btn btn-secondary" id="back-to-tournaments-btn">&larr; Back</button>
+            <h2 id="tournament-detail-title">Tournament Name</h2>
+        </div>
+        <div id="tournament-bracket" class="tournament-bracket">
+            <!-- Bracket will be rendered here -->
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="confirm-title">Confirm Action</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary cancel-modal" id="confirm-cancel-btn">Cancel</button>
+                <button class="btn btn-primary" id="confirm-ok-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add Player -->
+    <div id="add-player-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Player</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Player Name</label>
+                    <input type="text" id="new-player-name" class="form-control" placeholder="Enter player name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary cancel-modal">Cancel</button>
+                <button class="btn btn-primary" id="save-player-btn">Add Player</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Create Tournament -->
+    <div id="create-tournament-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Tournament</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tournament Name</label>
+                    <input type="text" id="tournament-name" class="form-control" placeholder="Enter tournament name">
+                </div>
+                <div class="form-group">
+                    <label>Format</label>
+                    <select id="tournament-format" class="form-control">
+                        <option value="3">Best of 3</option>
+                        <option value="5" selected>Best of 5</option>
+                        <option value="7">Best of 7</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Select Players (minimum 2)</label>
+                    <div id="tournament-players-list" class="checkbox-list"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary cancel-modal">Cancel</button>
+                <button class="btn btn-primary" id="save-tournament-btn">Create Tournament</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

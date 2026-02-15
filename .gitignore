@@ -1,0 +1,34 @@
+# Compiled class files
+*.class
+bin/
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Data files
+*.dat
+tabletennis_data.dat
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
